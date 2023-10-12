@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Pertemuan</h1>
+    <!-- <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item">Components</li>
+            <li class="breadcrumb-item active">Accordion</li>
+        </ol>
+    </nav> -->
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <!-- <div class="col-lg-6"> -->
+
+        <div class="card">
+            <div class="card-body">
+
+                <form class="row g-3" action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="col-md-2">
+                        <h5 class="card-title">Buat pertemuan</h5>
+                    </div>
+
+                    <style>
+                        .finp {
+                            margin-top: 1rem;
+                            border-color: #012970;
+                        }
+
+                        .scolor {
+                            margin-top: 1rem;
+                            color: #fff;
+                            background-color: #012970;
+                        }
+
+                        .title_acordion {
+                            color: #012970;
+                        }
+
+                        .tgl{
+                            font-size: 0.9rem;
+                        }
+                    </style>
+                    <div class="col-md-4">
+                        {{ form.title(class="form-control finp", placeholder="Title") }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.materi(class="form-control finp", placeholder="Materi") }}
+                    </div>
+                    <div class="text-center col-md-2">
+                        {{ form.submit(class="btn scolor") }}
+                    </div>
+                </form>
+
+                <h5 class="card-title">Daftar pertemuan</h5>
+
+
+                <!-- Default Accordion -->
+                <div class="accordion" id="accordionExample">
+                    {% for i in range(jumlah) %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ i }}" aria-expanded="false" aria-controls="collapse{{ i }}">
+                                <h5 class="title title_acordion"><span class="tgl">{{ daftar[i].timestamp.strftime("%Y/%m/%d") }}</span> | <b>{{ daftar[i].title }}</b> | {{ daftar[i].materi }}</h5>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ i }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+
+
+                                <!-- Table hadir -->
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Materi: {{daftar[i].materi}}</h4>
+                                        <a class="btn btn-primary" href="{{ url_for('absen_pertemuan', pertemuan=daftar[i].id) }}">Absen</a>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Id Cagot</th>
+                                                    <th scope="col">Nama Calgot</th>
+                                                    <th scope="col">Kehadiran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for isi in daftar[i].absensi %}
+                                                {% if isi.status == True %}
+                                                <tr class="table-info">
+                                                    <th scope="row">{{ isi.user.id }}</th>
+                                                    <td>{{ isi.user.username }}</td>
+                                                    <td>Hadir</td>
+                                                </tr>
+                                                {% else %}
+                                                <tr class="table-danger">
+                                                    <th scope="row">{{ isi.user.id }}</th>
+                                                    <td>{{ isi.user.username }}</td>
+                                                    <td>Tidak Hadir</td>
+                                                </tr>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table Variants -->
+
+                                    </div>
+                                </div>
+
+                                <!-- End Table Hadir -->
+
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Accordion Item #2
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>This is the second item's accordion body.</strong> It is hidden by default,
+                                until the collapse plugin adds the appropriate classes that we use to style each
+                                element. These classes control the overall appearance, as well as the showing and hiding
+                                via CSS transitions. You can modify any of this with custom CSS or overriding our
+                                default variables. It's also worth noting that just about any HTML can go within the
+                                <code>.accordion-body</code>, though the transition does limit overflow.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Accordion Item #3
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>This is the third item's accordion body.</strong> It is hidden by default, until
+                                the collapse plugin adds the appropriate classes that we use to style each element.
+                                These classes control the overall appearance, as well as the showing and hiding via CSS
+                                transitions. You can modify any of this with custom CSS or overriding our default
+                                variables. It's also worth noting that just about any HTML can go within the
+                                <code>.accordion-body</code>, though the transition does limit overflow.
+                            </div>
+                        </div>
+                    </div> -->
+                </div><!-- End Default Accordion Example -->
+
+            </div>
+        </div>
+
+        <!-- </div> -->
+
+
+    </div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="pagetitle">
+  <h1>Dasboard</h1>
+  <!-- <nav>
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Components</li>
+          <li class="breadcrumb-item active">Accordion</li>
+      </ol>
+  </nav> -->
+</div><!-- End Page Title -->
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Daftar Calgot</h5>
+    <!-- Table Variants -->
+    <table class="table">
+      <thead>
+
+        <tr class="table-light">
+          <th scope="col"></th>
+          <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <td>
+              <div class="col-md-12">
+                <div class="input-group">
+                  <span class="input-group-text" id="inputGroupPrepend2">Nama</span>
+                  {{ form.username(class='form-control') }}
+                </div>
+              </div>
+
+            </td>
+            <td>
+              <div class="col-md-12">
+                <div class="input-group">
+                  <span class="input-group-text" id="inputGroupPrepend2">Email</span>
+                  {{ form.email(class="form-control") }}
+                </div>
+              </div>
+            </td>
+            <td>
+              {{ form.submit(class="btn", style='background-color: #012970; color: #fff;') }}
+            </td>
+          </form>
+        </tr>
+        <tr class="table-light">
+          <th scope="col">Id</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Email</th>
+          <th scope="col">Kehadiran</th>
+          <th scope="col">Face prediksi</th>
+          <!-- <th scope="col">Tes scan</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for isi in allUser %}
+        {% if isi.dataset %}
+        <tr class="table-primary">
+          <th scope="row">{{ isi.id }}</th>
+          <td>{{ isi.username }}</td>
+          <td>{{ isi.email }}</td>
+          <td>{{ isi.jumlah_hadir }} dari {{ jumlah_pertemuan }}</td>
+          <td><a href="{{ url_for('tesprediksi', username=isi.username) }}" class="text-primary">{{ isi.face_prediksi }}% tes lagi</a></td>
+
+        </tr>
+        {% else %}
+        <tr class="table-danger">
+          <th scope="row">{{ isi.id }}</th>
+          <td>{{ isi.username }}</td>
+          <td>{{ isi.email }}</td>
+          <td>{{ isi.jumlah_hadir }} dari {{ jumlah_pertemuan }}</td>
+          <td><a href="{{ url_for('tambahkan', username=isi.username) }}">Latih dataset</a></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

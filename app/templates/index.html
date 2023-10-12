@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Camera</title>
+</head>
+
+<body> -->
+
+
+<h1>Real-Time Camera Streaming</h1>
+<div id="message"></div>
+<video id="video" width="640" height="480" autoplay></video>
+<button id="start-button">Start Camera</button>
+<button id="stop-button">Stop Camera</button>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script> -->
+<script src="{{ url_for('static', filename='socket.io.js') }}"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Semua kode JavaScript Anda disini
+
+        const socket = io();
+        socket.on('redirect', function (data) {
+            window.location.href = data.url;
+        });
+
+        socket.on('message', function (data) {
+            // Menampilkan pesan teks ke pengguna, misalnya dalam sebuah elemen div dengan ID 'message'
+            document.getElementById('message').textContent = data.text;
+        });
+
+        // socket.on('redirect', function (data) {
+        //     window.location.href = data.url;
+        // });
+
+        const videoElement = document.getElementById('video');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                videoElement.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.error('Error accessing the camera:', error);
+            });
+
+        startButton.addEventListener('click', function () {
+            socket.emit('start_camera');
+        });
+
+        stopButton.addEventListener('click', function () {
+            socket.emit('stop_camera');
+        });
+
+        videoElement.addEventListener('canplay', function () {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+
+            setInterval(function () {
+                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                const image_data = canvas.toDataURL('image/jpeg');
+                socket.emit('image', image_data);
+            }, 2000); // Mengirim gambar setiap 1 detik
+        });
+    });
+
+</script>
+
+{% endblock %}

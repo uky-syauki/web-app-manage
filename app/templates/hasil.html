@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <table>
+        <tr>
+            <td>
+                <div class="card-body">
+                    <h5 class="card-title">Informasi Calgot</h5>
+
+                    <!-- List group With badges -->
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Id Calgot
+                            <span class="badge bg-primary rounded-pill">{{ user.id }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Nama Calgot
+                            <span class="badge bg-primary rounded-pill">{{ user.username }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Email Calgot
+                            <span class="badge bg-primary rounded-pill">{{ user.email }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Jumlah sample foto
+                            <span class="badge bg-primary rounded-pill">14</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            foto kualitas minimum
+                            <span class="badge bg-primary rounded-pill">2</span>
+                        </li>
+                        {% if user.dataset %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('dasboard') }}" class="btn btn-primary">Kembali ke Dasboard</a>
+                            <span class="badge text-primary rounded-pill">Dataset telah dilatih</span>
+                        </li>
+                        {% else %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ url_for('latih', username=username) }}" class="btn btn-primary">Latih Dataset</a>
+                            <span class="badge text-danger rounded-pill">Dataset belum dilatih</span>
+                        </li>
+                        {% endif %}
+                    </ul><!-- End List With badges -->
+
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+</div>
+
+{% endblock %}
